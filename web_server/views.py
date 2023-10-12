@@ -92,3 +92,9 @@ def delete_article(request, pk):
     return Response(status.status)
 
 
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def get_author_files(request):
+    articles = Article.objects.filter(author = request.user.id)
+    serializer = ArticleSerializer(articles, many = True)
+    return Response(serializer.data)
