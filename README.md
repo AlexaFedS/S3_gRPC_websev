@@ -5,4 +5,5 @@ djangorestframework <br/>
 grpcio <br/>
 grpcio-tools <br/>
 djoser <br/>
-drf-yasg <br/>
+## Swagger-file:
+Для свагера - открыть swagger.yaml
