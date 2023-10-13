@@ -38,12 +38,12 @@ def get_file(request, pk):
 def add_article(request):
     mbuffer = request.FILES['article']
     fileArticle = (mbuffer.file).read()
-    status_article = stub.AddFile(grpc_server_pb2.FileRequest(bucketName = request.POST['bucketName_article'], title = request.POST['title_article'], content = fileArticle.decode('latin-1'), contentType = 'application/pdf'))
-    url_article = stub.GetFile(grpc_server_pb2.FileName(bucketName = request.data['bucketName_article'], title = request.data['title_article'])).content
+    status_article = stub.AddFile(grpc_server_pb2.FileRequest(bucketName = 'articles', title = request.POST['title_article'], content = fileArticle.decode('latin-1'), contentType = 'application/pdf'))
+    url_article = stub.GetFile(grpc_server_pb2.FileName(bucketName = 'articles', title = request.data['title_article'])).content
     mbuffer = request.FILES['permission']
     filePermission = (mbuffer.file).read()
-    status_permission = stub.AddFile(grpc_server_pb2.FileRequest(bucketName = request.POST['bucketName_permission'], title = request.POST['title_permission'], content = filePermission.decode('latin-1'), contentType = 'application/pdf'))
-    url_permission = stub.GetFile(grpc_server_pb2.FileName(bucketName = request.data['bucketName_permission'], title = request.data['title_permission'])).content
+    status_permission = stub.AddFile(grpc_server_pb2.FileRequest(bucketName = 'permissions', title = request.POST['title_permission'], content = filePermission.decode('latin-1'), contentType = 'application/pdf'))
+    url_permission = stub.GetFile(grpc_server_pb2.FileName(bucketName = 'permissions', title = request.data['title_permission'])).content
     data = {
         "name_article" : request.data['name_article'],
         "author" : request.user.id,
@@ -62,17 +62,17 @@ def add_article(request):
 def edit_article(request, pk):
     article = get_object_or_404(Article, pk=pk)
     if request.FILES:
-        if request.FILES['article'] and request.POST['bucketName_article'] and request.POST['title_article']:
+        if request.FILES['article'] and request.POST['title_article']:
             myData = request.FILES['article']
             file = (myData.file).read()
-            status = stub.EditFile(grpc_server_pb2.FileRequest(bucketName = request.POST['bucketName_article'], title = request.POST['title_article'], content = file.decode('latin-1'), contentType = 'application/pdf'))
-            request.data['url_article'] = stub.GetFile(grpc_server_pb2.FileName(bucketName = request.data['bucketName_article'], title = request.data['title_article'])).content
+            status = stub.EditFile(grpc_server_pb2.FileRequest(bucketName = 'articles', title = request.POST['title_article'], content = file.decode('latin-1'), contentType = 'application/pdf'))
+            request.data['url_article'] = stub.GetFile(grpc_server_pb2.FileName(bucketName = 'articles', title = request.data['title_article'])).content
             print(status.status)
-        if request.FILES['permission'] and request.POST['bucketName_permission'] and request.POST['title_permission']:
+        if request.FILES['permission'] and request.POST['title_permission']:
             myData = request.FILES['permission']
             file = (myData.file).read()
-            status = stub.EditFile(grpc_server_pb2.FileRequest(bucketName = request.POST['bucketName_permission'], title = request.POST['title_permission'], content = file.decode('latin-1'), contentType = 'application/pdf'))
-            article.url_permission = stub.GetFile(grpc_server_pb2.FileName(bucketName = request.data['bucketName_permission'], title = request.data['title_permission'])).content
+            status = stub.EditFile(grpc_server_pb2.FileRequest(bucketName = 'permissions', title = request.POST['title_permission'], content = file.decode('latin-1'), contentType = 'application/pdf'))
+            article.url_permission = stub.GetFile(grpc_server_pb2.FileName(bucketName = 'permissions', title = request.data['title_permission'])).content
             print(status.status)
         
     print(request.data)
