@@ -143,6 +143,21 @@ paths:
         description: 'Год публикации (YYYY-MM-DD)'
         required: true
         type: string
+      - name: url_article
+        in: formData
+        description: 'Ссылка на статью'
+        required: true
+        type: string
+      - name: url_permission
+        in: formData
+        description: 'Ссылка на разрешение'
+        required: true
+        type: string
+      - name: author
+        in: formData
+        description: 'Автор статьи'
+        required: true
+        type: integer
       responses:
         '200':
           description: ''
