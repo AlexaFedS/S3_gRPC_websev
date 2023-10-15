@@ -58,7 +58,7 @@ def add_article(request):
 
 # Изменение статьи, названия полей не изменять!
 @permission_classes ([IsAuthenticated])
-@api_view(['PUT'])
+@api_view(['POST'])
 def edit_article(request, pk):
     article = get_object_or_404(Article, pk=pk)
     if request.FILES:
@@ -88,13 +88,24 @@ def edit_article(request, pk):
 def delete_article(request, pk):
     article = get_object_or_404(Article, pk=pk)
     article.delete()
-    status = stub.DeleteFile(grpc_server_pb2.FileName(bucketName = request.data['bucketName'], title = request.data['title']))
-    return Response(status.status)
+    article_title = article.url_article.split('/').pop()
+    permission_title = article.url_permission.split('/').pop()
+    status_article = stub.DeleteFile(grpc_server_pb2.FileName(bucketName = 'articles', title = article_title))
+    status_permission = stub.DeleteFile(grpc_server_pb2.FileName(bucketName = 'permissions', title = permission_title))
+    return Response({"status article":status_article.status, "status permission" : status_permission.status})
 
 
 @permission_classes([IsAuthenticated])
 @api_view(['GET'])
-def get_author_files(request):
-    articles = Article.objects.filter(author = request.user.id)
+def get_author_files(request, pk):
+    articles = Article.objects.filter(author = pk)
     serializer = ArticleSerializer(articles, many = True)
     return Response(serializer.data)
+
+@permission_classes([IsAuthenticated])
+@api_view(['GET'])
+def get_user(request, id):
+    user = User.objects.get(id = id)
+    serializer = UserSerializer(user)
+    return Response(serializer.data)
+    
