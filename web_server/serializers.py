@@ -8,6 +8,13 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username']
 
+class ArticleDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Article
+        depth = 1
+        fields = '__all__'
+
 class ArticleSerializer(serializers.ModelSerializer):
 
     class Meta:
