@@ -61,7 +61,8 @@ urlpatterns = [
                                     # title_permission - название файла, тоже !вводить исключительно английскими буквами/цифрами и в конце всегда добавлять '.pdf'!
                                     # permission - сам пдф файл разрешения
     path(r'articles/<int:pk>/delete', files_views.delete_article, name='remove_article'), # удаление определенного файла
-    path(r'myarticles', files_views.get_author_files, name="author's_articles"), # вывод статей определенного автора
+    path(r'myarticles/<int:pk>', files_views.get_author_files, name="author's_articles"), # вывод статей определенного автора
+    path(r'user/<int:id>', files_views.get_user, name="user"),
 
     # auth/users - регистрация
     # auth/token/login - вход и получение токена
